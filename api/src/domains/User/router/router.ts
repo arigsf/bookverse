@@ -3,7 +3,7 @@ import { createUser } from "../controllers";
 
 const router = Router();
 
-router.get(
+router.post(
 	"/",
 	createUser
 );
