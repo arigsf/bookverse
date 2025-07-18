@@ -2,6 +2,8 @@ import express, { Express } from "express";
 import dotenv from "dotenv";
 import cors, { CorsOptions } from "cors";
 
+import UserRouter from "../src/domains/User/router/router";
+
 dotenv.config();
 
 export const app: Express = express();
@@ -18,3 +20,5 @@ app.use(
         extended: true,
     }),
 );
+
+app.use("/api/user", UserRouter);
