@@ -12,7 +12,7 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role      String
+  role      Role
   active    Boolean
   posts     Post[]
   comments  Comment[]
@@ -59,4 +59,9 @@ model Like {
   postId    String
 
   @@unique([userId, postId])
+}
+
+enum Role {
+  ADMIN
+  USER
 }
