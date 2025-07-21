@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -13,6 +12,8 @@ model User {
   name      String
   email     String   @unique
   password  String
+  role      Role    @default(USER)
+  active    Boolean @default(true)
   posts     Post[]
   comments  Comment[]
   likes     Like[]
@@ -58,4 +59,9 @@ model Like {
   postId    String
 
   @@unique([userId, postId])
+}
+
+enum Role {
+  ADMIN
+  USER
 }
