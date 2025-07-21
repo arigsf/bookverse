@@ -1,7 +1,17 @@
 import { Router } from "express";
-import { createUser, deleteUser, updateUser } from "../controllers";
+import { createUser, deleteUser, getAllUsers, getUserById, updateUser } from "../controllers";
 
 const router = Router();
+
+router.get(
+	"/",
+	getAllUsers
+);
+
+router.get(
+	"/:id",
+	getUserById
+);
 
 router.post(
 	"/",
@@ -9,12 +19,12 @@ router.post(
 );
 
 router.put(
-	"/",
+	"/:id",
 	updateUser
 );
 
 router.delete(
-	"/",
+	"/:id",
 	deleteUser
 );
 

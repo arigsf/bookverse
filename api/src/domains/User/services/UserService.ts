@@ -5,11 +5,35 @@ import { InvalidParamError } from "../../../../errors/InvalidParamError";
 import { NotAuthorizedError } from "../../../../errors/NotAuthorizedError";
 
 class UserService {
-	private async encryptPassword(password: string){
+	private async encryptPassword(password: string) {
 		return await hash(password, 10);
 	}
 
-	async create(user: User){
+	async getAll() {
+		const users = await prisma.user.findMany({
+			orderBy: {
+				name: "asc",
+			},
+		});
+
+		return users;
+	}
+
+	async getById(id: string) {
+		const user = await prisma.user.findUnique({
+			where: {
+				id: id,
+			}
+		});
+
+		if (!user) {
+			throw new InvalidParamError("Usuário com ID não encontrado.");
+		}
+
+		return user;
+	}
+
+	async create(user: User) {
 		const alreadyExist = await prisma.user.findFirst({
 			where: {
 				email: user.email,
@@ -29,12 +53,8 @@ class UserService {
 		return newUser;
 	}
 
-	async update(id: string, body: Partial<User>, currentUser: User){
-		const existingUser = await prisma.user.findUnique({
-			where: {
-				id: id,
-			}
-		});
+	async update(id: string, body: Partial<User>, currentUser: User) {
+		const existingUser = await this.getById(id);
 
 		if (!existingUser) {
 			throw new InvalidParamError("Usuário com ID não encontrado.");
@@ -71,12 +91,8 @@ class UserService {
 		return updatedUser;
 	}
 
-	async delete(id: string, currentUser: User){
-		const existingUser = await prisma.user.findUnique({
-			where: {
-				id: id,
-			}
-		});
+	async delete(id: string, currentUser: User) {
+		const existingUser = await this.getById(id);
 
 		if (!existingUser) {
 			throw new InvalidParamError("Usuário com ID não encontrado.");
