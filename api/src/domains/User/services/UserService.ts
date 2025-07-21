@@ -71,6 +71,29 @@ class UserService {
 		return updatedUser;
 	}
 
+	async delete(id: string, currentUser: User){
+		const existingUser = await prisma.user.findUnique({
+			where: {
+				id: id,
+			}
+		});
+
+		if (!existingUser) {
+			throw new InvalidParamError("Usuário com ID não encontrado.");
+		}
+
+		if (currentUser.role !== "ADMIN") {
+			throw new NotAuthorizedError("Você não tem permissão para deletar.");
+		}
+
+		const deletedUser = await prisma.user.delete({
+			where: {
+				id: id,
+			}
+		});
+
+		return deletedUser;
+	}
 }
 
 export default new UserService();
