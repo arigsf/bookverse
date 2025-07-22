@@ -1,8 +1,8 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 import cors, { CorsOptions } from "cors";
-
 import UserRouter from "../src/domains/User/router/router";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -15,6 +15,7 @@ const options: CorsOptions = {
 
 app.use(cors(options));
 app.use(express.json());
+app.use(cookieParser());
 app.use(
     express.urlencoded({
         extended: true,
