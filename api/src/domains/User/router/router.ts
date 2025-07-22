@@ -5,15 +5,15 @@ import { login, logout } from "../controllers/auth";
 
 const router = Router();
 
-router.get("/",	getAllUsers);
+router.get("/",	verifyJWT, getAllUsers);
 
-router.get("/:id", getUserById);
+router.get("/:id", verifyJWT, getUserById);
 
 router.post("/", createUser);
 
-router.put("/:id", updateUser);
+router.put("/:id", verifyJWT, updateUser);
 
-router.delete("/:id", deleteUser);
+router.delete("/:id", verifyJWT, deleteUser);
 
 router.post("/login", notLoggedIn, login);
 

@@ -42,7 +42,6 @@ export const checkRole = (roles: Array<string>) => {
 export function notLoggedIn(req: Request, res: Response, next: NextFunction) {
 	try {
 		const token = cookieExtractor(req);
-		console.log(token);
 
 		if (token) {
 			const decoded = verify(token, process.env.SECRET_KEY || "");
