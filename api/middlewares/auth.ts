@@ -13,7 +13,7 @@ export function verifyJWT(req: Request, res: Response, next: NextFunction) {
 			const decoded = verify(token, process.env.SECRET_KEY || "") as JwtPayload;
 			req.user = decoded.user;
 		}
-		if (req.user === null) {
+		if (req.user === null || req.user === undefined) {
 			throw new TokenError("Você precisa estar logado para realizar essa ação!");
 		}
 		next();
@@ -42,6 +42,7 @@ export const checkRole = (roles: Array<string>) => {
 export function notLoggedIn(req: Request, res: Response, next: NextFunction) {
 	try {
 		const token = cookieExtractor(req);
+		console.log(token);
 
 		if (token) {
 			const decoded = verify(token, process.env.SECRET_KEY || "");
