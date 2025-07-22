@@ -48,7 +48,7 @@ export async function updateUser(
 ) {
 	try {
 		await UserService.update(req.params.id, req.body, req.user);
-		res.status(statusCodes.CREATED).json("Usuário cadastrado com sucesso!");
+		res.status(statusCodes.CREATED).json("Usuário atualizado com sucesso!");
 	} catch (error) {
 		next(error);
 	}
@@ -61,7 +61,7 @@ export async function deleteUser(
 ) {
 	try {
 		await UserService.delete(req.params.id, req.user);
-		res.status(statusCodes.CREATED).json("Usuário cadastrado com sucesso!");
+		res.status(statusCodes.CREATED).json("Usuário removido com sucesso!");
 	} catch (error) {
 		next(error);
 	}
