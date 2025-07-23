@@ -2,8 +2,7 @@ import { api } from ".";
 
 export async function login(credentials: { email: string, password: string }) {
 	try {
-		const res = await api.post("/user/login", credentials);
-		return res.data;
+		await api.post("/user/login", credentials);
 	} catch (error) {
 		console.log(error);
 		throw error;

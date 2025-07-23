@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const { user, handleLogin } = useAuth();
+	const navigate = useNavigate();
 
-	const handleSubmit = (e: React.FormEvent) => {
+	useEffect(() => {
+		if (user) {
+			navigate("/");
+		}
+	}, [user, navigate]);
+
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		console.log({ email, password });
+		await handleLogin(email, password);
 	};
 
 	return (
@@ -49,7 +59,7 @@ export default function Login() {
 
 				<button
 					type="submit"
-					className="w-full bg-myblue-dark text-white py-2 rounded hover:bg-myblue-light transition-colors"
+					className="w-full bg-black text-white py-2 rounded hover:bg-myblue-light transition-colors"
 				>
 					Entrar
 				</button>

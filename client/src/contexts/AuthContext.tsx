@@ -7,28 +7,32 @@ type User = {
 	name: string;
 	email: string;
 	role: string;
-	active: boolean;
 };
 
 type AuthContextType = {
 	user: User | null;
+	loading: boolean;
 	handleLogin: (email: string, password: string) => void;
 	handleLogout: () => Promise<void>;
 };
 
-const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const navigate = useNavigate();
 	const [user, setUser] = useState<User | null>(null);
+	const [loading, setLoading] = useState(true);
 
 	const fetchUser = async () => {
 		try {
 			const res = await myAccount();
+			console.log(res);
 			setUser(res.data);
 		} catch (error) {
 			setUser(null);
 			console.log(error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -38,8 +42,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 	async function handleLogin(email: string, password: string) {
 		try {
-			const user = await login({ email, password });
-			setUser(user);
+			await login({ email, password });
+			await fetchUser();
 			navigate("/");
 		} catch (error) {
 			console.log(error);
@@ -57,7 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	}
 
 	return (
-		<AuthContext.Provider value={{ user, handleLogin, handleLogout }}>
+		<AuthContext.Provider value={{ user, loading, handleLogin, handleLogout }}>
 			{children}
 		</AuthContext.Provider>
 	);
