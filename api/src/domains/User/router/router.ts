@@ -7,9 +7,9 @@ const router = Router();
 
 router.get("/",	verifyJWT, getAllUsers);
 
-router.get("/:id", verifyJWT, getUserById);
-
 router.get("/account", verifyJWT, myAccount);
+
+router.get("/:id", verifyJWT, getUserById);
 
 router.post("/", createUser);
 
