@@ -20,7 +20,7 @@ export default tseslint.config([
 			globals: globals.browser,
 		},
 		rules: {
-			indent: ['error', 4],
+			indent: ['error', 'tab'],
 			semi: ['error', 'always'],
 			quotes: ['error', 'double'],
 		},
