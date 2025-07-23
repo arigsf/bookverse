@@ -28,6 +28,19 @@ export async function getUserById(
 	}
 }
 
+export async function myAccount(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	try {
+		const user = await UserService.getById(req.user.id);
+		res.status(statusCodes.CREATED).json(user);
+	} catch (error) {
+		next(error);
+	}
+}
+
 export async function createUser(
 	req: Request,
 	res: Response,

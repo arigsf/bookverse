@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUser, deleteUser, getAllUsers, getUserById, updateUser } from "../controllers";
+import { createUser, deleteUser, getAllUsers, getUserById, myAccount, updateUser } from "../controllers";
 import { notLoggedIn, verifyJWT } from "../../../../middlewares/auth";
 import { login, logout } from "../controllers/auth";
 
@@ -8,6 +8,8 @@ const router = Router();
 router.get("/",	verifyJWT, getAllUsers);
 
 router.get("/:id", verifyJWT, getUserById);
+
+router.get("/account", verifyJWT, myAccount);
 
 router.post("/", createUser);
 
