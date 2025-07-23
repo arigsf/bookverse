@@ -4,7 +4,7 @@ import RouterObject from "./RouterObject";
 
 export default function ProtectedRoutes() {
 	const { user } = useAuth();
-	const isLogged = !user;
+	const isLogged = !!user;
 
 	return useRoutes(RouterObject(isLogged));
 }
