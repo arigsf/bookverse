@@ -1,14 +1,24 @@
-import { AuthProvider } from "./contexts/AuthContext";
-import { BrowserRouter } from "react-router-dom";
-import ProtectedRoutes from "./routes/ProtectedRoutes";
+import { Routes, Route } from "react-router-dom";
+import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import { useAuth } from "./contexts/AuthContext";
+import { AuthLoading } from "./components/Loading/AuthLoading";
 
 function App() {
+	const { isCheckingAuth } = useAuth();
+
+	if (isCheckingAuth) {
+		return <AuthLoading />;
+	}
+
 	return (
-		<BrowserRouter>
-			<AuthProvider>
-				<ProtectedRoutes />
-			</AuthProvider>
-		</BrowserRouter>
+		<Routes>
+			<Route index path="/login" element={<Login />} />
+			<Route element={<ProtectedRoute />}>
+				<Route index element={<Home />} />
+			</Route>
+		</Routes>
 	);
 }
 
