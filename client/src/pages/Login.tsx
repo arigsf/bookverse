@@ -1,64 +1,89 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
-import clouds from "../assets/clouds.svg";
 import { Button } from "../components/Button/index";
+import { InputContainer } from "../components/InputContainer";
+import { Input } from "../components/Input";
+import type { Login } from "../types/userTypes";
+import clouds from "../assets/clouds.svg";
+import logo from "../assets/logo.png";
+
+interface ErrorMessage {
+	email: string | null;
+	password: string | null;
+}
 
 export default function Login() {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const { user, handleLogin } = useAuth();
-	const navigate = useNavigate();
+	const { handleLogin } = useAuth();
 
-	useEffect(() => {
-		if (user) {
-			navigate("/");
-		}
-	}, [user, navigate]);
+	const [form, setForm] = useState<Login>({ email: "", password: "" });
+	const [errorMessage, setErrorMessage] = useState<ErrorMessage>({
+		email: null,
+		password: null,
+	});
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		await handleLogin(email, password);
+
+		try {
+			await handleLogin(form.email, form.password);
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		} catch (error) {
+			setErrorMessage({
+				email: " ",
+				password: "Email e/ou senha inválidos.",
+			});
+		}
+	};
+
+	const handleEmailChange = (value: string): void => {
+		setForm((prev) => ({ ...prev, email: value }));
+		if (errorMessage.email) {
+			setErrorMessage((prevState) => ({ ...prevState, email: null }));
+		}
+	};
+
+	const handlePasswordChange = (value: string): void => {
+		setForm((prev) => ({ ...prev, password: value }));
+		if (errorMessage.password) {
+			setErrorMessage((prevState) => ({ ...prevState, password: null }));
+		}
 	};
 
 	return (
-		<div className="min-h-screen flex flex-col md:flex-row bg-white">
-			<div className="md:w-2/5 w-full flex items-center justify-center bg-repeat"
+		<div className="min-h-screen flex flex-col justify-center md:flex-row">
+			<div className="md:w-5/12 w-full flex items-center justify-center bg-repeat"
 				style={{ backgroundImage: `url(${clouds})` }}></div>
-			<div className="md:w-3/5 w-full flex items-center justify-center p-8">
+			<div className="md:w-7/12 w-full flex items-center justify-center p-8">
 				<form
+					id="login-form"
 					onSubmit={handleSubmit}
 					className="bg-white w-full max-w-md space-y-6"
 				>
-					<h2 className="text-3xl font-bold text-center">Login</h2>
-
-					<div>
-						<label htmlFor="email" className="block text-sm font-medium mb-1">
-							Email
-						</label>
-						<input
-							id="email"
+					<img
+						src={logo}
+						alt="Logo"
+						className="w-1/2 h-auto mx-auto"
+					/>
+					<InputContainer errorMessage={errorMessage.email} className="max-w">
+						<Input
+							placeholder="E-mail"
 							type="email"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-							required
-							className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+							value={form.email}
+							onChange={handleEmailChange}
+							labelClassName="bg-backgroundPrimary"
+							error={!!errorMessage.email}
 						/>
-					</div>
-
-					<div>
-						<label htmlFor="password" className="block text-sm font-medium mb-1">
-							Senha
-						</label>
-						<input
-							id="password"
+					</InputContainer>
+					<InputContainer errorMessage={errorMessage.password} className="max-w">
+						<Input
+							placeholder="Senha"
 							type="password"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							required
-							className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+							value={form.password}
+							onChange={handlePasswordChange}
+							labelClassName="bg-backgroundPrimary"
+							error={!!errorMessage.password}
 						/>
-					</div>
+					</InputContainer>
 					<Button type="submit">
 						Entrar
 					</Button>

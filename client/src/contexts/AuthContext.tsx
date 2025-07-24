@@ -41,23 +41,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	}, []);
 
 	async function handleLogin(email: string, password: string) {
-		try {
-			await login({ email, password });
-			await fetchUser();
-			navigate("/");
-		} catch (error) {
-			console.log(error);
-		}
+		await login({ email, password });
+		const user = await myAccount();
+		setUser(user);
+		navigate("/");
 	}
 
 	async function handleLogout() {
-		try {
-			await logout();
-			setUser(null);
-			navigate("/login");
-		} catch (error) {
-			console.log(error);
-		}
+		await logout();
+		setUser(null);
+		navigate("/login");
 	}
 
 	return (

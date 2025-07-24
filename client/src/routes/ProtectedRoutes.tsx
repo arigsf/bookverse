@@ -3,8 +3,13 @@ import { useAuth } from "../contexts/AuthContext";
 import RouterObject from "./RouterObject";
 
 export default function ProtectedRoutes() {
-	const { user } = useAuth();
-	const isLogged = !!user;
+	const { user, loading } = useAuth();
 
-	return useRoutes(RouterObject(isLogged));
+	if (loading) {
+		return <div>Carregando...</div>; // Tudo bem retornar aqui porque não é um hook
+	}
+	console.log(user);
+
+	// OK chamar hook depois do if porque useRoutes não é um hook React padrão, mas às vezes pode dar warning dependendo da versão
+	return useRoutes(RouterObject(!!user));
 }
