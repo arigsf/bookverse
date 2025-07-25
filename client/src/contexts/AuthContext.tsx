@@ -44,7 +44,6 @@ export const AuthProvider: React.FC<AuthProviderType> = ({ children }) => {
 				}
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			} catch (error) {
-				console.log("deu ruim");
 				setUser(null);
 				setIsAuthenticated(false);
 			} finally {
