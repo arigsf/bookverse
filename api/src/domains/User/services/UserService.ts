@@ -14,6 +14,11 @@ class UserService {
 			orderBy: {
 				name: "asc",
 			},
+			select: {
+				id: true,
+				name: true,
+				email: true,
+			}
 		});
 
 		return users;
@@ -23,6 +28,12 @@ class UserService {
 		const user = await prisma.user.findUnique({
 			where: {
 				id: id,
+			},
+			select: {
+				id: true,
+				name: true,
+				email: true,
+				role: true
 			}
 		});
 
