@@ -5,8 +5,10 @@ import HomeIcon from "@mui/icons-material/Home";
 import BookIcon from "@mui/icons-material/Book";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 export const Navbar: React.FC = () => {
+	const { user, handleLogout } = useAuth();
 	const [dropdownOpen, setDropdownOpen] = useState(false);
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -41,13 +43,13 @@ export const Navbar: React.FC = () => {
 							{dropdownOpen && (
 								<div className="absolute right-0 mt-2 w-48 bg-white divide-y divide-gray-100 rounded-sm shadow-lg z-50 dark:bg-gray-700 dark:divide-gray-600">
 									<div className="px-4 py-3">
-										<p className="text-sm text-gray-900 dark:text-white">Nome</p>
-										<p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300">nome@gmaila.com</p>
+										<p className="text-sm text-gray-900 dark:text-white">{user?.name}</p>
+										<p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300">{user?.email}</p>
 									</div>
 									<ul className="py-1">
-										<li><Link to="/" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white">Perfil</Link></li>
-										<li><Link to="/" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white">Configurações</Link></li>
-										<li><Link to="/" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white">Sair</Link></li>
+										<Link to="/"><li className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white">Perfil</li></Link>
+										<Link to="/"><li className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white">Configurações</li></Link>
+										<li className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white cursor-pointer" onClick={handleLogout}>Sair</li>
 									</ul>
 								</div>
 							)}
