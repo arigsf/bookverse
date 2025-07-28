@@ -50,18 +50,20 @@ export const AuthProvider: React.FC<AuthProviderType> = ({ children }) => {
 		};
 
 		checkLoginStatus();
-	}, [navigate]);
+	}, []);
 
 	async function handleLogin(email: string, password: string) {
 		await login({ email, password });
 		const user = await myAccount();
 		setUser(user);
+		setIsAuthenticated(true);
 		navigate("/");
 	}
 
 	async function handleLogout() {
 		await logout();
 		setUser(null);
+		setIsAuthenticated(false);
 		navigate("/login");
 	}
 
