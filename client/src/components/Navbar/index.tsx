@@ -48,7 +48,7 @@ export const Navbar: React.FC = () => {
 									</div>
 									<ul className="py-1">
 										<Link to="/profile"><li className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white">Perfil</li></Link>
-										<Link to="/configs"><li className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white">Configurações</li></Link>
+										<Link to="/settings"><li className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white">Configurações</li></Link>
 										<li className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white cursor-pointer" onClick={handleLogout}>Sair</li>
 									</ul>
 								</div>

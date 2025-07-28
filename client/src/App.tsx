@@ -6,6 +6,7 @@ import { useAuth } from "./contexts/AuthContext";
 import { AuthLoading } from "./components/Loading/AuthLoading";
 import Settings from "./pages/Settings";
 import { PublicRoute } from "./components/Route/PublicRoute";
+import NotFound from "./pages/NotFound";
 
 function App() {
 	const { isCheckingAuth } = useAuth();
@@ -23,6 +24,7 @@ function App() {
 				<Route path="/" element={<Home />} />
 				<Route path="/settings" element={<Settings />} />
 			</Route>
+			<Route path="*" element={<NotFound />} />
 		</Routes>
 	);
 }
