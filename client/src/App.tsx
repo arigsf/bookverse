@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import { useAuth } from "./contexts/AuthContext";
 import { AuthLoading } from "./components/Loading/AuthLoading";
+import Configs from "./pages/Configs";
 
 function App() {
 	const { isCheckingAuth } = useAuth();
@@ -14,9 +15,10 @@ function App() {
 
 	return (
 		<Routes>
-			<Route index path="/login" element={<Login />} />
+			<Route path="/login" element={<Login />} />
 			<Route element={<ProtectedRoute />}>
-				<Route index element={<Home />} />
+				<Route path="/" element={<Home />} />
+				<Route path="/configs" element={<Configs />} />
 			</Route>
 		</Routes>
 	);
