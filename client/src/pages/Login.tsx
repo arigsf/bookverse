@@ -70,8 +70,8 @@ export default function Login() {
 							type="email"
 							value={form.email}
 							onChange={handleEmailChange}
-							labelClassName="bg-backgroundPrimary"
 							error={!!errorMessage.email}
+							required
 						/>
 					</InputContainer>
 					<InputContainer errorMessage={errorMessage.password} className="max-w">
@@ -80,8 +80,8 @@ export default function Login() {
 							type="password"
 							value={form.password}
 							onChange={handlePasswordChange}
-							labelClassName="bg-backgroundPrimary"
 							error={!!errorMessage.password}
+							required
 						/>
 					</InputContainer>
 					<Button type="submit">

@@ -34,8 +34,6 @@ export function Input(props: InputProps) {
 		onFocus,
 		onBlur,
 		className = "",
-		wrapperClassName = "",
-		labelClassName = "",
 		id,
 		required = false,
 		disabled = false,
@@ -64,7 +62,7 @@ export function Input(props: InputProps) {
 	};
 
 	return (
-		<div className={`relative ${wrapperClassName}`}>
+		<div className={"relative"}>
 			<input
 				id={inputId}
 				type={isPassword ? (isPasswordHidden ? "password" : "text") : type}
@@ -82,7 +80,7 @@ export function Input(props: InputProps) {
 			/>
 			<label
 				htmlFor={inputId}
-				className={`peer-focus:text-text pointer-events-none absolute left-2.5 max-w-[80%] origin-left transform overflow-hidden text-ellipsis text-nowrap px-1 transition-[top,font-size,color] duration-200 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-1.5 peer-focus:text-xs ${value ? "-top-1.5 text-xs" : "top-3 text-base"} ${error ? "text-red-500" : ""} ${labelClassName || "bg-backgroundTertiary"}`}
+				className={`peer-focus:text-text pointer-events-none absolute left-2.5 max-w-[80%] origin-left transform overflow-hidden text-ellipsis text-nowrap px-1 transition-[top,font-size,color] duration-200 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-1.5 peer-focus:text-xs ${value ? "-top-1.5 text-xs" : "top-3 text-base"} ${error ? "text-red-500" : ""}`}
 			>
 				{placeholder}
 			</label>
