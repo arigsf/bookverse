@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "../components/Button/index";
-import { InputContainer } from "../components/InputContainer";
+import { InputContainer } from "../components/Containers/InputContainer";
 import { Input } from "../components/Input";
 import type { Login } from "../types/userTypes";
 import clouds from "../assets/clouds.svg";
