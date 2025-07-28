@@ -39,8 +39,6 @@ export const AuthProvider: React.FC<AuthProviderType> = ({ children }) => {
 				if (userData) {
 					setUser(userData);
 					setIsAuthenticated(true);
-
-					navigate("/");
 				}
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			} catch (error) {
