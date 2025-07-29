@@ -53,13 +53,13 @@ export function validatePasswordFormat(
 		.map(([key]) => key);
 	if (failed.length > 0) {
 		const labels: Record<string, string> = {
-			containsNumber: "número",
-			containsUpper: "letra maiúscula",
-			containsLower: "letra minúscula",
-			containsSymbols: "símbolo",
+			containsNumber: "1 número",
+			containsUpper: "1 letra maiúscula",
+			containsLower: "1 letra minúscula",
+			containsSymbols: "1 caracter especial",
 			contains8: "8 caracteres",
 		};
-		return `A senha deve conter: ${failed.map((c) => labels[c]).join(", ")}.`;
+		return `A senha deve conter pelo menos ${failed.map((c) => labels[c]).join(", ")}.`;
 	}
 	return null;
 }
