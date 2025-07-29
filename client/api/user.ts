@@ -1,29 +1,22 @@
 import { api } from ".";
+import type { UpdateAccount } from "../src/types/userTypes";
 
 export async function login(credentials: { email: string, password: string }) {
-	try {
-		await api.post("/user/login", credentials);
-	} catch (error) {
-		console.log(error);
-		throw error;
-	}
+	await api.post("/user/login", credentials);
 }
 
 export async function logout() {
-	try {
-		await api.post("/user/logout");
-	} catch (error) {
-		console.log(error);
-		throw error;
-	}
+	await api.post("/user/logout");
 }
 
 export async function myAccount() {
-	try {
-		const res = await api.get("/user/account");
-		return res.data;
-	} catch (error) {
-		console.log(error);
-		throw error;
-	}
+
+	const res = await api.get("/user/account");
+	return res.data;
+}
+
+export async function updateAccount(data: UpdateAccount) {
+	const { id, ...body } = data;
+	const res = await api.put(`/user/${id}`, body);
+	return res.data;
 }
