@@ -5,7 +5,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import BookIcon from "@mui/icons-material/Book";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 
 export const Navbar: React.FC = () => {
 	const { user, handleLogout } = useAuth();

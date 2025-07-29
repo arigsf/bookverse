@@ -4,10 +4,10 @@ import { InputContainer } from "../components/Containers/InputContainer";
 import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 import { useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
 import { validateEmailFormat, validateEmailRequired, validateName, validatePasswordFormat } from "../utils/userValidations";
 import { updateAccount } from "../../api/user";
-import { useAlert } from "../contexts/AlertContext";
+import { useAlert } from "../hooks/useAlert";
+import { useAuth } from "../hooks/useAuth";
 
 interface ErrorMessage {
 	name: string | null;

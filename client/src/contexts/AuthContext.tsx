@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffect, type ReactNode } from "react";
+import { createContext, useState, useEffect, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { login, logout, myAccount } from "../../api/user";
 
@@ -81,11 +81,5 @@ export const AuthProvider: React.FC<AuthProviderType> = ({ children }) => {
 	);
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
-export function useAuth() {
-	const context = useContext(AuthContext);
-	if (!context) {
-		throw new Error("useAuth deve ser usado dentro de um AuthProvider");
-	}
-	return context;
-}
+
+export { AuthContext };

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef, useState, type ReactNode } from "react";
+import React, { createContext, useRef, useState, type ReactNode } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ErrorIcon from "@mui/icons-material/Error";
@@ -101,9 +101,4 @@ const getIcon = (type?: AlertType) => {
 	}
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
-export const useAlert = () => {
-	const context = useContext(AlertContext);
-	if (!context) throw new Error("useAlert deve ser usado dentro do AlertProvider");
-	return context;
-};
+export { AlertContext };
