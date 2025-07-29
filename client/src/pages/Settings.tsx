@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { validateEmailFormat, validateEmailRequired, validateName, validatePasswordFormat } from "../utils/userValidations";
 import { updateAccount } from "../../api/user";
+import { useAlert } from "../contexts/AlertContext";
 
 interface ErrorMessage {
 	name: string | null;
@@ -17,6 +18,8 @@ interface ErrorMessage {
 
 export default function Settings() {
 	const { user } = useAuth();
+	const { showAlert } = useAlert();
+
 	const [form, setForm] = useState({
 		email: user?.email || "",
 		name: user?.name || "",
@@ -44,9 +47,10 @@ export default function Settings() {
 				password: form.password,
 			};
 			const res = await updateAccount(userData);
-			console.log(res);
+			showAlert(res, "success");
 		} catch (error) {
-			console.log(error);
+			const message = error instanceof Error ? error.message : String(error);
+			showAlert(message, "error");
 		}
 	};
 

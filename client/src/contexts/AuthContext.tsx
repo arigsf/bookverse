@@ -9,7 +9,7 @@ type User = {
 	role: string;
 };
 
-type AuthContextType = {
+interface AuthContextType {
 	user: User | null;
 	setUser: React.Dispatch<React.SetStateAction<User | null>>;
 	isAuthenticated: boolean;
@@ -18,7 +18,7 @@ type AuthContextType = {
 	handleLogout: () => Promise<void>;
 };
 
-type AuthProviderType = {
+interface AuthProviderType {
 	children: ReactNode;
 }
 
