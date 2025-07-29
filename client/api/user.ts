@@ -16,7 +16,6 @@ export async function myAccount() {
 }
 
 export async function updateAccount(data: UpdateAccount) {
-	const { id, ...body } = data;
-	const res = await api.put(`/user/${id}`, body);
+	const res = await api.put("/user/account", data);
 	return res.data;
 }

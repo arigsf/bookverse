@@ -6,6 +6,7 @@ import { Input } from "../components/Input";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { validateEmailFormat, validateEmailRequired, validateName, validatePasswordFormat } from "../utils/userValidations";
+import { updateAccount } from "../../api/user";
 
 interface ErrorMessage {
 	name: string | null;
@@ -34,6 +35,18 @@ export default function Settings() {
 
 		if (!validateForm()) {
 			return;
+		}
+
+		try {
+			const userData = {
+				email: form.email,
+				name: form.name,
+				password: form.password,
+			};
+			const res = await updateAccount(userData);
+			console.log(res);
+		} catch (error) {
+			console.log(error);
 		}
 	};
 
