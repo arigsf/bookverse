@@ -5,11 +5,13 @@ import { Button } from "../components/Button";
 import { Input } from "../components/Input";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { validateEmailFormat, validateEmailRequired, validateName, validatePasswordFormat } from "../utils/userValidations";
 
 interface ErrorMessage {
 	name: string | null;
 	email: string | null;
 	password: string | null;
+	checkPassword: string | null;
 }
 
 export default function Settings() {
@@ -24,11 +26,57 @@ export default function Settings() {
 		name: null,
 		email: null,
 		password: null,
+		checkPassword: null,
 	});
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
+		if (!validateForm()) {
+			return;
+		}
+	};
+
+	const validateForm = () => {
+		let isValid = true;
+		const newErrors: ErrorMessage = {
+			name: null,
+			email: null,
+			password: null,
+			checkPassword: null,
+		};
+
+		const nameError = validateName(form.name);
+		if (nameError) {
+			newErrors.name = nameError;
+			isValid = false;
+		}
+
+		const emailRequiredError = validateEmailRequired(form.email);
+		const emailFormatError = validateEmailFormat(form.email);
+
+		if (emailRequiredError) {
+			newErrors.email = emailRequiredError;
+			isValid = false;
+		} else if (emailFormatError) {
+			newErrors.email = emailFormatError;
+			isValid = false;
+		}
+
+		if (form.password.trim()) {
+			const passwordError = validatePasswordFormat(
+				form.password,
+				form.checkPassword
+			);
+			if (passwordError) {
+				newErrors.password = passwordError;
+				newErrors.checkPassword = passwordError;
+				isValid = false;
+			}
+		}
+
+		setErrorMessage(newErrors);
+		return isValid;
 	};
 
 	const handleInputChange = (field: string, value: string) => {
@@ -62,7 +110,6 @@ export default function Settings() {
 									value={form.email}
 									onChange={(value) => handleInputChange("email", value)}
 									error={!!errorMessage.email}
-									required
 								/>
 							</InputContainer>
 							<InputContainer errorMessage={errorMessage.name}>
@@ -72,7 +119,6 @@ export default function Settings() {
 									value={form.name}
 									onChange={(value) => handleInputChange("name", value)}
 									error={!!errorMessage.name}
-									required
 								/>
 							</InputContainer>
 							<InputContainer errorMessage={errorMessage.password}>
@@ -82,6 +128,15 @@ export default function Settings() {
 									value={form.password}
 									onChange={(value) => handleInputChange("password", value)}
 									error={!!errorMessage.password}
+								/>
+							</InputContainer>
+							<InputContainer errorMessage={errorMessage.password}>
+								<Input
+									placeholder="Confirmar senha"
+									type="password"
+									value={form.checkPassword}
+									onChange={(value) => handleInputChange("checkPassword", value)}
+									error={!!errorMessage.checkPassword}
 								/>
 							</InputContainer>
 							<Button type="submit">

@@ -14,7 +14,7 @@ export const InputContainer: React.FC<InputContainerProps> = ({
 	return (
 		<div className={`flex w-full flex-col ${className || ""}`}>
 			{children}
-			<div className="text-primary mt-1 text-sm">
+			<div className="text-red-500 mt-1 text-sm">
 				{errorMessage && <span>{errorMessage}</span>}
 			</div>
 		</div>
