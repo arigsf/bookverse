@@ -5,7 +5,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import BookIcon from "@mui/icons-material/Book";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 
 export const Navbar: React.FC = () => {
 	const { user, handleLogout } = useAuth();
@@ -14,7 +14,7 @@ export const Navbar: React.FC = () => {
 
 	return (
 		<>
-			<nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+			<nav className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
 				<div className="px-3 py-3 lg:px-5">
 					<div className="flex items-center justify-between">
 						<div className="flex items-center">
@@ -47,8 +47,8 @@ export const Navbar: React.FC = () => {
 										<p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300">{user?.email}</p>
 									</div>
 									<ul className="py-1">
-										<Link to="/"><li className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white">Perfil</li></Link>
-										<Link to="/"><li className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white">Configurações</li></Link>
+										<Link to="/profile"><li className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white">Perfil</li></Link>
+										<Link to="/settings"><li className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white">Configurações</li></Link>
 										<li className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white cursor-pointer" onClick={handleLogout}>Sair</li>
 									</ul>
 								</div>
@@ -70,13 +70,13 @@ export const Navbar: React.FC = () => {
 							</Link>
 						</li>
 						<li>
-							<Link to={"/"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+							<Link to={"/explore"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 								<SearchIcon className="w-d h-6 mr-2 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
 								Explorar
 							</Link>
 						</li>
 						<li>
-							<Link to={"/"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+							<Link to={"/books"} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
 								<BookIcon className="w-d h-6 mr-2 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
 								Livros
 							</Link>

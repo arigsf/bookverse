@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { useAuth } from "../contexts/AuthContext";
 import { Button } from "../components/Button/index";
-import { InputContainer } from "../components/InputContainer";
+import { InputContainer } from "../components/Containers/InputContainer";
 import { Input } from "../components/Input";
 import type { Login } from "../types/userTypes";
 import clouds from "../assets/clouds.svg";
 import logo from "../assets/logo.png";
+import { useAuth } from "../hooks/useAuth";
+import { useAlert } from "../hooks/useAlert";
+import axios from "axios";
 
 interface ErrorMessage {
 	email: string | null;
@@ -14,6 +16,7 @@ interface ErrorMessage {
 
 export default function Login() {
 	const { handleLogin } = useAuth();
+	const { showAlert } = useAlert();
 
 	const [form, setForm] = useState<Login>({ email: "", password: "" });
 	const [errorMessage, setErrorMessage] = useState<ErrorMessage>({
@@ -26,12 +29,16 @@ export default function Login() {
 
 		try {
 			await handleLogin(form.email, form.password);
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch (error) {
-			setErrorMessage({
-				email: " ",
-				password: "Email e/ou senha inválidos.",
-			});
+			let message = "Erro ao logar.";
+
+			if (axios.isAxiosError(error) && error.response) {
+				message = error.response.data || error.message;
+			} else if (error instanceof Error) {
+				message = error.message;
+			}
+
+			showAlert(message, "error");
 		}
 	};
 
@@ -70,8 +77,8 @@ export default function Login() {
 							type="email"
 							value={form.email}
 							onChange={handleEmailChange}
-							labelClassName="bg-backgroundPrimary"
 							error={!!errorMessage.email}
+							required
 						/>
 					</InputContainer>
 					<InputContainer errorMessage={errorMessage.password} className="max-w">
@@ -80,8 +87,8 @@ export default function Login() {
 							type="password"
 							value={form.password}
 							onChange={handlePasswordChange}
-							labelClassName="bg-backgroundPrimary"
 							error={!!errorMessage.password}
+							required
 						/>
 					</InputContainer>
 					<Button type="submit">

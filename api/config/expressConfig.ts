@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors, { CorsOptions } from "cors";
 import UserRouter from "../src/domains/User/router/router";
 import cookieParser from "cookie-parser";
+import { errorHandler } from "../middlewares/errorHandler";
 
 dotenv.config();
 
@@ -23,3 +24,5 @@ app.use(
 );
 
 app.use("/api/user", UserRouter);
+
+app.use(errorHandler);

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUser, deleteUser, getAllUsers, getUserById, myAccount, updateUser } from "../controllers";
+import { createUser, deleteUser, getAllUsers, getUserById, myAccount, updateAccount, updateUser } from "../controllers";
 import { notLoggedIn, verifyJWT } from "../../../../middlewares/auth";
 import { login, logout } from "../controllers/auth";
 
@@ -12,6 +12,8 @@ router.get("/account", verifyJWT, myAccount);
 router.get("/:id", verifyJWT, getUserById);
 
 router.post("/", createUser);
+
+router.put("/account", verifyJWT, updateAccount);
 
 router.put("/:id", verifyJWT, updateUser);
 

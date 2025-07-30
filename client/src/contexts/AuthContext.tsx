@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffect, type ReactNode } from "react";
+import { createContext, useState, useEffect, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { login, logout, myAccount } from "../../api/user";
 
@@ -9,7 +9,7 @@ type User = {
 	role: string;
 };
 
-type AuthContextType = {
+interface AuthContextType {
 	user: User | null;
 	setUser: React.Dispatch<React.SetStateAction<User | null>>;
 	isAuthenticated: boolean;
@@ -18,7 +18,7 @@ type AuthContextType = {
 	handleLogout: () => Promise<void>;
 };
 
-type AuthProviderType = {
+interface AuthProviderType {
 	children: ReactNode;
 }
 
@@ -39,8 +39,6 @@ export const AuthProvider: React.FC<AuthProviderType> = ({ children }) => {
 				if (userData) {
 					setUser(userData);
 					setIsAuthenticated(true);
-
-					navigate("/");
 				}
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			} catch (error) {
@@ -52,18 +50,20 @@ export const AuthProvider: React.FC<AuthProviderType> = ({ children }) => {
 		};
 
 		checkLoginStatus();
-	}, [navigate]);
+	}, []);
 
 	async function handleLogin(email: string, password: string) {
 		await login({ email, password });
 		const user = await myAccount();
 		setUser(user);
+		setIsAuthenticated(true);
 		navigate("/");
 	}
 
 	async function handleLogout() {
 		await logout();
 		setUser(null);
+		setIsAuthenticated(false);
 		navigate("/login");
 	}
 
@@ -81,11 +81,5 @@ export const AuthProvider: React.FC<AuthProviderType> = ({ children }) => {
 	);
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
-export function useAuth() {
-	const context = useContext(AuthContext);
-	if (!context) {
-		throw new Error("useAuth deve ser usado dentro de um AuthProvider");
-	}
-	return context;
-}
+
+export { AuthContext };
