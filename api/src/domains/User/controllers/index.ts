@@ -67,6 +67,19 @@ export async function updateUser(
 	}
 }
 
+export async function updateAccount(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	try {
+		await UserService.update(req.user.id, req.body, req.user);
+		res.status(statusCodes.CREATED).json("Dados atualizados com sucesso!");
+	} catch (error) {
+		next(error);
+	}
+}
+
 export async function deleteUser(
 	req: Request,
 	res: Response,
