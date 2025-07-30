@@ -8,6 +8,8 @@ import { validateEmailFormat, validateEmailRequired, validateName, validatePassw
 import { updateAccount } from "../../api/user";
 import { useAlert } from "../hooks/useAlert";
 import { useAuth } from "../hooks/useAuth";
+import type { UpdateAccount } from "../types/userTypes";
+import axios from "axios";
 
 interface ErrorMessage {
 	name: string | null;
@@ -36,20 +38,45 @@ export default function Settings() {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
+		const isSameEmail = form.email === user?.email;
+		const isSameName = form.name === user?.name;
+		const isPasswordEmpty = !form.password.trim();
+
+		if(isSameEmail && isSameName && isPasswordEmpty){
+			showAlert("Nenhuma alteração foi feita nos campos.", "warning");
+			return;
+		}
+
 		if (!validateForm()) {
 			return;
 		}
 
 		try {
-			const userData = {
-				email: form.email,
-				name: form.name,
-				password: form.password,
-			};
+			const userData: UpdateAccount = {};
+			
+			if(form.email && form.email !== user?.email){
+				userData.email = form.email;
+			}
+
+			if(form.name && form.name !== user?.name){
+				userData.name = form.name;
+			}
+
+			if (form.password.trim()) {
+				userData.password = form.password;
+			}
+
 			const res = await updateAccount(userData);
 			showAlert(res, "success");
 		} catch (error) {
-			const message = error instanceof Error ? error.message : String(error);
+			let message = "Erro ao atualizar dados da conta.";
+
+			if (axios.isAxiosError(error) && error.response) {
+				message = error.response.data || error.message;
+			} else if (error instanceof Error){
+				message = error.message;
+			}
+
 			showAlert(message, "error");
 		}
 	};

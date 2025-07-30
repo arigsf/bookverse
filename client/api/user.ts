@@ -10,7 +10,6 @@ export async function logout() {
 }
 
 export async function myAccount() {
-
 	const res = await api.get("/user/account");
 	return res.data;
 }
