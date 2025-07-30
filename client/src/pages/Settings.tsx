@@ -10,6 +10,7 @@ import { useAlert } from "../hooks/useAlert";
 import { useAuth } from "../hooks/useAuth";
 import type { UpdateAccount } from "../types/userTypes";
 import axios from "axios";
+import { Modal } from "../components/Modal";
 
 interface ErrorMessage {
 	name: string | null;
@@ -19,8 +20,12 @@ interface ErrorMessage {
 }
 
 export default function Settings() {
-	const { user } = useAuth();
+	const { user, handleLogout } = useAuth();
 	const { showAlert } = useAlert();
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const openModal = () => setIsModalOpen(true);
+	const cancelModal = () => setIsModalOpen(false);
 
 	const [form, setForm] = useState({
 		email: user?.email || "",
@@ -142,6 +147,7 @@ export default function Settings() {
 
 		try {
 			await updateAccount(userData);
+			await handleLogout();
 		} catch (error) {
 			let message = "Erro ao desativar conta.";
 
@@ -211,7 +217,7 @@ export default function Settings() {
 					<div>
 						<div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
 							<h2 className="text-xl font-semibold pb-5">Zona de risco</h2>
-							<Button variant="outlined" className="text-red-600 border-red-600 hover:bg-red-50" onClick={handleDisableAccount}>
+							<Button variant="outlined" className="text-red-600 border-red-600 hover:bg-red-50" onClick={openModal}>
 								Desativar minha conta
 							</Button>
 							<Button variant="outlined" className="mt-5 text-red-600 border-red-600 hover:bg-red-50">
@@ -220,6 +226,11 @@ export default function Settings() {
 						</div>
 					</div>
 				</div>
+				<Modal isOpen={isModalOpen} onCancel={cancelModal} title="Desativação de conta" onConfirm={handleDisableAccount} confirmText="Desativar">
+					<p><b>Atenção!</b> A desativação da sua conta é imediata e suspende todas as suas atividades.
+						Ao desativar, você será deslogado.
+						Sua conta será reativada automaticamente na próxima vez que fizer login.</p>
+				</Modal>
 			</MainContainer>
 		</>
 	);

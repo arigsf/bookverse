@@ -1,18 +1,25 @@
 import Clear from "@mui/icons-material/Clear";
 import React, { useEffect, useState } from "react";
+import { Button } from "../Button";
 
 interface ModalProps {
 	isOpen: boolean;
-	onClose: () => void;
 	title: string;
+	onConfirm?: () => void;
+	onCancel: () => void;
+	confirmText?: string;
+	cancelText?: string;
 	children: React.ReactNode;
 }
 
 export const Modal: React.FC<ModalProps> = React.memo(
 	({
 		isOpen,
-		onClose,
 		title,
+		onConfirm,
+		onCancel,
+		confirmText = "Confirmar",
+		cancelText = "Fechar",
 		children
 	}) => {
 		const [showModal, setShowModal] = useState(false);
@@ -22,11 +29,14 @@ export const Modal: React.FC<ModalProps> = React.memo(
 			if (isOpen) {
 				setShowModal(true);
 				setTimeout(() => setAnimateModal(true), 10);
-			} else {
-				setAnimateModal(false);
-				setTimeout(() => setShowModal(false), 200);
 			}
 		}, [isOpen]);
+
+		const handleClose = () => {
+			setAnimateModal(false);
+			setTimeout(() => setShowModal(false), 200);
+			onCancel();
+		};
 
 		if (!showModal) return null;
 
@@ -42,15 +52,26 @@ export const Modal: React.FC<ModalProps> = React.memo(
 							{title}
 						</h2>
 						<button
-							onClick={onClose}
+							onClick={handleClose}
 							tabIndex={0}
 							className="text-gray-600 hover:text-gray-800 transition-colors duration-200"
-							aria-label="Close modal"
 						>
 							<Clear />
 						</button>
 					</div>
 					<div className="text-gray-700">{children}</div>
+					<div className="flex justify-end mt-8 space-x-3">
+						<Button className="max-w-40 bg-gray-600 hover:bg-gray-500"
+							onClick={handleClose}>
+							{cancelText}
+						</Button>
+						{onConfirm && (
+							<Button className="max-w-40 bg-red-600 hover:bg-red-500"
+								onClick={onConfirm}>
+								{confirmText}
+							</Button>
+						)}
+					</div>
 				</div>
 			</div>
 		);
