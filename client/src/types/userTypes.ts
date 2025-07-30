@@ -7,4 +7,5 @@ export interface UpdateAccount {
 	email?: string;
 	name?: string;
 	password?: string;
+	active?: boolean;
 }

@@ -42,7 +42,7 @@ export default function Settings() {
 		const isSameName = form.name === user?.name;
 		const isPasswordEmpty = !form.password.trim();
 
-		if(isSameEmail && isSameName && isPasswordEmpty){
+		if (isSameEmail && isSameName && isPasswordEmpty) {
 			showAlert("Nenhuma alteração foi feita nos campos.", "warning");
 			return;
 		}
@@ -51,21 +51,21 @@ export default function Settings() {
 			return;
 		}
 
+		const userData: UpdateAccount = {};
+
+		if (form.email && form.email !== user?.email) {
+			userData.email = form.email;
+		}
+
+		if (form.name && form.name !== user?.name) {
+			userData.name = form.name;
+		}
+
+		if (form.password.trim()) {
+			userData.password = form.password;
+		}
+
 		try {
-			const userData: UpdateAccount = {};
-			
-			if(form.email && form.email !== user?.email){
-				userData.email = form.email;
-			}
-
-			if(form.name && form.name !== user?.name){
-				userData.name = form.name;
-			}
-
-			if (form.password.trim()) {
-				userData.password = form.password;
-			}
-
 			const res = await updateAccount(userData);
 			showAlert(res, "success");
 		} catch (error) {
@@ -73,7 +73,7 @@ export default function Settings() {
 
 			if (axios.isAxiosError(error) && error.response) {
 				message = error.response.data || error.message;
-			} else if (error instanceof Error){
+			} else if (error instanceof Error) {
 				message = error.message;
 			}
 
@@ -135,6 +135,26 @@ export default function Settings() {
 		}));
 	};
 
+	const handleDisableAccount = async () => {
+		const userData: UpdateAccount = {
+			active: false,
+		};
+
+		try {
+			await updateAccount(userData);
+		} catch (error) {
+			let message = "Erro ao desativar conta.";
+
+			if (axios.isAxiosError(error) && error.response) {
+				message = error.response.data || error.message;
+			} else if (error instanceof Error) {
+				message = error.message;
+			}
+
+			showAlert(message, "error");
+		}
+	};
+
 	return (
 		<>
 			<Navbar></Navbar>
@@ -191,7 +211,7 @@ export default function Settings() {
 					<div>
 						<div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
 							<h2 className="text-xl font-semibold pb-5">Zona de risco</h2>
-							<Button variant="outlined" className="text-red-600 border-red-600 hover:bg-red-50">
+							<Button variant="outlined" className="text-red-600 border-red-600 hover:bg-red-50" onClick={handleDisableAccount}>
 								Desativar minha conta
 							</Button>
 							<Button variant="outlined" className="mt-5 text-red-600 border-red-600 hover:bg-red-50">
