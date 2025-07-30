@@ -6,6 +6,8 @@ import type { Login } from "../types/userTypes";
 import clouds from "../assets/clouds.svg";
 import logo from "../assets/logo.png";
 import { useAuth } from "../hooks/useAuth";
+import { useAlert } from "../hooks/useAlert";
+import axios from "axios";
 
 interface ErrorMessage {
 	email: string | null;
@@ -14,6 +16,7 @@ interface ErrorMessage {
 
 export default function Login() {
 	const { handleLogin } = useAuth();
+	const { showAlert } = useAlert();
 
 	const [form, setForm] = useState<Login>({ email: "", password: "" });
 	const [errorMessage, setErrorMessage] = useState<ErrorMessage>({
@@ -26,12 +29,16 @@ export default function Login() {
 
 		try {
 			await handleLogin(form.email, form.password);
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		} catch (error) {
-			setErrorMessage({
-				email: " ",
-				password: "Email e/ou senha inválidos.",
-			});
+			let message = "Erro ao logar.";
+
+			if (axios.isAxiosError(error) && error.response) {
+				message = error.response.data || error.message;
+			} else if (error instanceof Error) {
+				message = error.message;
+			}
+
+			showAlert(message, "error");
 		}
 	};
 
