@@ -20,7 +20,7 @@ interface ErrorMessage {
 }
 
 export default function Settings() {
-	const { user, handleLogout } = useAuth();
+	const { user, setUser, handleLogout } = useAuth();
 	const { showAlert } = useAlert();
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -72,7 +72,12 @@ export default function Settings() {
 
 		try {
 			const res = await updateAccount(userData);
+			setUser((prev) => ({
+				...prev!,
+				...userData
+			}));
 			showAlert(res, "success");
+
 		} catch (error) {
 			let message = "Erro ao atualizar dados da conta.";
 
