@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
 import statusCodes from "../utils/constants/statusCodes";
+import { getValidator } from "./inputValidator";
 
 const Validator = (validations: any) => {
 	return async (req: Request, res: Response, next: NextFunction) => {

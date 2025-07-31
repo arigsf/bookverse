@@ -2,6 +2,7 @@ import { Router } from "express";
 import { createUser, deleteUser, getAllUsers, getUserById, myAccount, updateAccount, updateUser } from "../controllers";
 import { notLoggedIn, verifyJWT } from "../../../../middlewares/auth";
 import { login, logout } from "../controllers/auth";
+import inputValidator from "../../../../middlewares/validatorHandler";
 
 const router = Router();
 
@@ -11,16 +12,16 @@ router.get("/account", verifyJWT, myAccount);
 
 router.get("/:id", verifyJWT, getUserById);
 
-router.post("/", createUser);
+router.post("/", inputValidator("createUser"), createUser);
 
-router.put("/account", verifyJWT, updateAccount);
+router.put("/account", inputValidator("updateAccount"), verifyJWT, updateAccount);
 
-router.put("/:id", verifyJWT, updateUser);
+router.put("/:id", inputValidator("updateUser"), verifyJWT, updateUser);
 
 router.delete("/:id", verifyJWT, deleteUser);
 
-router.post("/login", notLoggedIn, login);
+router.post("/login", inputValidator("login"), notLoggedIn, login);
 
-router.post("/logout", verifyJWT, logout);
+router.post("/logout", inputValidator("idExists"), verifyJWT, logout);
 
 export default router;
