@@ -12,9 +12,13 @@ interface Alert {
 	type: AlertType;
 }
 
+interface ValidatorErrors {
+	errors: { msg: string } [];
+};
+
 interface AlertContextType {
 	alert: Alert | null;
-	showAlert: (message: string, type?: AlertType) => void;
+	showAlert: (message: string | ValidatorErrors, type?: AlertType) => void;
 	clearAlert: () => void;
 }
 
@@ -28,8 +32,16 @@ export const AlertProvider: React.FC<AlertProviderType> = ({ children }) => {
 	const [alert, setAlert] = useState<Alert | null>(null);
 	const timeoutId = useRef<NodeJS.Timeout | null>(null);
 
-	const showAlert = (message: string, type: AlertType = "info") => {
-		setAlert({ message, type });
+	const showAlert = (message: string | ValidatorErrors, type: AlertType = "info") => {
+		let alertMessage = "";
+
+		if (typeof message === "string") {
+			alertMessage = message;
+		} else if(message && Array.isArray(message.errors)){
+			alertMessage = message.errors.map((e) => e.msg).join(", ");
+		}
+
+		setAlert({ message: alertMessage, type });
 
 		if (timeoutId.current) {
 			clearTimeout(timeoutId.current);
