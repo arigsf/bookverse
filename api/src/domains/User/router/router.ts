@@ -18,10 +18,10 @@ router.put("/account", inputValidator("updateAccount"), verifyJWT, updateAccount
 
 router.put("/:id", inputValidator("updateUser"), verifyJWT, updateUser);
 
-router.delete("/:id", verifyJWT, deleteUser);
+router.delete("/:id", inputValidator("idExists"), verifyJWT, deleteUser);
 
 router.post("/login", inputValidator("login"), notLoggedIn, login);
 
-router.post("/logout", inputValidator("idExists"), verifyJWT, logout);
+router.post("/logout", verifyJWT, logout);
 
 export default router;

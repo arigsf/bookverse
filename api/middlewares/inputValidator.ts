@@ -93,7 +93,7 @@ export const getValidator = (method: string) => {
 					.withMessage("O id é obrigatório.")
 					.notEmpty()
 					.withMessage("O id deve ser válido."),
-				allowOnlyFields(["name", "email", "password", "active"]),
+				allowOnlyFields(["name", "email", "password", "active", "deactivationReason"]),
 				body("name")
 					.optional()
 					.isAlpha("pt-BR", { ignore: " " })
