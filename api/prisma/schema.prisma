@@ -8,34 +8,36 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role    @default(USER)
-  active    Boolean @default(true)
-  posts     Post[]
-  comments  Comment[]
-  likes     Like[]
-  createdAt DateTime @default(now())
+  id                 String    @id @default(uuid())
+  name               String
+  email              String    @unique
+  password           String
+  role               Role      @default(USER)
+  active             Boolean   @default(true)
+  deactivatedBy      Role?
+  deactivationReason String?
+  posts              Post[]
+  comments           Comment[]
+  likes              Like[]
+  createdAt          DateTime  @default(now())
 }
 
 model Book {
-  id        String   @id
-  title     String
-  authors   String
-  coverUrl  String?
-  posts     Post[]
+  id       String  @id
+  title    String
+  authors  String
+  coverUrl String?
+  posts    Post[]
 }
 
 model Post {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id])
   userId    String
-  book      Book     @relation(fields: [bookId], references: [id])
+  book      Book      @relation(fields: [bookId], references: [id])
   bookId    String
   comments  Comment[]
   likes     Like[]
@@ -52,11 +54,11 @@ model Comment {
 }
 
 model Like {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  post      Post     @relation(fields: [postId], references: [id])
-  postId    String
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  post   Post   @relation(fields: [postId], references: [id])
+  postId String
 
   @@unique([userId, postId])
 }
