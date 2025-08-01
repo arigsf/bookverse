@@ -71,9 +71,26 @@ class UserService {
 			throw new InvalidParamError("Usuário com ID não encontrado.");
 		}
 
+		const isSelfUser = id === currentUser.id;
 
-		if (body.role && currentUser.role !== "ADMIN" || id !== currentUser.id && currentUser.role !== "ADMIN") {
-			throw new NotAuthorizedError("Você não tem permissão para editar.");
+		if (!isSelfUser && currentUser.role !== "ADMIN") {
+			throw new NotAuthorizedError("Você não tem permissão para editar outro usuário.");
+		}
+
+		if (body.role && currentUser.role !== "ADMIN") {
+			throw new NotAuthorizedError("Você não tem permissão para editar o cargo do usuário.");
+		}
+
+		if (!body.active) {
+			if (isSelfUser) {
+				body.deactivatedBy = "USER";
+				body.deactivationReason = null;
+			} else {
+				body.deactivatedBy = "ADMIN";
+				if (!body.deactivationReason) {
+					throw new InvalidParamError("Motivo da desativação é obrigatório.");
+				}
+			}
 		}
 
 		if (body.password) {
