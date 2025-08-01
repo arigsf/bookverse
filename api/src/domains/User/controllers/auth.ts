@@ -11,7 +11,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 		const { email, password } = req.body;
 		const user = await prisma.user.findUnique({ where: { email } });
 
-		if(!user){
+		if (!user) {
 			throw new InvalidParamError("Email e/ou senha incorretos.");
 		}
 
@@ -21,12 +21,22 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 			throw new InvalidParamError("Email e/ou senha incorretos.");
 		}
 
-		if (!user.active) {
-			throw new NotAuthorizedError("Usuário desativado.");
+		if (!user.active && user.deactivatedBy === "ADMIN") {
+			throw new NotAuthorizedError("Usuário desativado. Entre em contato com o suporte.");
+		} else {
+			await prisma.user.update({
+				where: {
+					email: email,
+				},
+				data: {
+					active: true,
+					deactivatedBy: null,
+				}
+			});
 		}
 
 		generateJWT(user, res);
-		
+
 		const returnUser = {
 			id: user.id,
 			name: user.name,
@@ -34,7 +44,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 			role: user.role,
 			active: user.active,
 		};
-		
+
 		res.status(statusCodes.SUCCESS).json(returnUser);
 	} catch (error) {
 		next(error);
