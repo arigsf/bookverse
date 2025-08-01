@@ -18,6 +18,7 @@ class UserService {
 				id: true,
 				name: true,
 				email: true,
+				photo: true,
 			}
 		});
 
@@ -33,7 +34,8 @@ class UserService {
 				id: true,
 				name: true,
 				email: true,
-				role: true
+				role: true,
+				photo: true,
 			}
 		});
 
